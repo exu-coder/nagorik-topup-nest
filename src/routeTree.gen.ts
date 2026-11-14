@@ -10,33 +10,69 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PaymentReturnRouteImport } from './routes/payment-return'
+import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as ApiPublicNagorikpayRouteImport } from './routes/api/public/nagorikpay'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentReturnRoute = PaymentReturnRouteImport.update({
+  id: '/payment-return',
+  path: '/payment-return',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategorySlugRoute = CategorySlugRouteImport.update({
+  id: '/category/$slug',
+  path: '/category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicNagorikpayRoute = ApiPublicNagorikpayRouteImport.update({
+  id: '/api/public/nagorikpay',
+  path: '/api/public/nagorikpay',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/payment-return': typeof PaymentReturnRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/api/public/nagorikpay': typeof ApiPublicNagorikpayRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/payment-return': typeof PaymentReturnRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/api/public/nagorikpay': typeof ApiPublicNagorikpayRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/payment-return': typeof PaymentReturnRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/api/public/nagorikpay': typeof ApiPublicNagorikpayRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/payment-return' | '/category/$slug' | '/api/public/nagorikpay'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/payment-return' | '/category/$slug' | '/api/public/nagorikpay'
+  id:
+    | '__root__'
+    | '/'
+    | '/payment-return'
+    | '/category/$slug'
+    | '/api/public/nagorikpay'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PaymentReturnRoute: typeof PaymentReturnRoute
+  CategorySlugRoute: typeof CategorySlugRoute
+  ApiPublicNagorikpayRoute: typeof ApiPublicNagorikpayRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +84,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment-return': {
+      id: '/payment-return'
+      path: '/payment-return'
+      fullPath: '/payment-return'
+      preLoaderRoute: typeof PaymentReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/category/$slug': {
+      id: '/category/$slug'
+      path: '/category/$slug'
+      fullPath: '/category/$slug'
+      preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/nagorikpay': {
+      id: '/api/public/nagorikpay'
+      path: '/api/public/nagorikpay'
+      fullPath: '/api/public/nagorikpay'
+      preLoaderRoute: typeof ApiPublicNagorikpayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PaymentReturnRoute: PaymentReturnRoute,
+  CategorySlugRoute: CategorySlugRoute,
+  ApiPublicNagorikpayRoute: ApiPublicNagorikpayRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
