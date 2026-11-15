@@ -45,6 +45,11 @@ export const Route = createFileRoute("/category/$slug")({
 
 function CategoryPage() {
   const { slug } = Route.useLoaderData();
+  // Key by slug so picks from one product page never leak into another.
+  return <CategoryView key={slug} slug={slug} />;
+}
+
+function CategoryView({ slug }: { slug: string }) {
   const { cancelled } = Route.useSearch();
   const category = getCategory(slug)!;
   const checkout = useServerFn(startCheckout);
@@ -64,7 +69,7 @@ function CategoryPage() {
     if (cancelled) toast.info("Payment cancelled. You can try again anytime.");
   }, [cancelled]);
 
-  const current = quote(slug, selection);
+  const current = safeQuote(slug, selection, category.packages[0]?.id ?? "");
   const idValid = /^\d{5,15}$/.test(targetId.trim());
   const emailValid = /^\S+@\S+\.\S+$/.test(email.trim());
   const phoneValid = phone.trim() === "" || /^01\d{9}$/.test(phone.trim());
@@ -289,6 +294,14 @@ function CategoryPage() {
       </section>
     </div>
   );
+}
+
+function safeQuote(slug: string, selection: Selection, fallbackPackageId: string) {
+  try {
+    return quote(slug, selection);
+  } catch {
+    return quote(slug, { kind: "package", packageId: fallbackPackageId });
+  }
 }
 
 function Field({
