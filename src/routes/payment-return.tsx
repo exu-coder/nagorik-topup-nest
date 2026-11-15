@@ -112,11 +112,11 @@ function Row({ k, v }: { k: string; v: string }) {
 function Shell({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center px-4 pt-10 text-center">
-      <div className="w-full rounded-2xl border border-border bg-card p-6 shadow-card">
+      <div className="w-full rounded-3xl border border-border bg-card p-6 animate-rise shadow-soft">
         <div className="flex justify-center">{icon}</div>
         <h1 className="mt-3 text-2xl font-bold">{title}</h1>
         <div className="mt-2 flex flex-col items-center">{children}</div>
-        <Button asChild variant="gold" size="xl" className="mt-6 w-full">
+        <Button asChild variant="glossy" size="xl" className="mt-6 w-full">
           <Link to="/">
             <Home /> Back to shop
           </Link>

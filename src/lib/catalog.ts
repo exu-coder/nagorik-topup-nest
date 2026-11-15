@@ -1,6 +1,6 @@
-import likesImg from "@/assets/category-likes.jpg";
-import gloryImg from "@/assets/category-glory.jpg";
-import tcpImg from "@/assets/category-tcp.jpg";
+import likesBanner from "@/assets/banner-freefire-likes.webp.asset.json";
+import gloryImg from "@/assets/banner-guild-glory.jpg";
+import tcpBanner from "@/assets/banner-tcp-bot.webp.asset.json";
 
 export type CategorySlug = "freefire-likes" | "guild-glory" | "tcp-bot";
 
@@ -42,7 +42,7 @@ export const CATEGORIES: Category[] = [
     name: "Free Fire Likes",
     tagline: "প্রতিদিন ২০০ লাইক",
     description: "Free Fire আইডির লাইক কিনুন — শুধু UID দিন, পেমেন্ট করুন, লাইক চলে যাবে।",
-    image: likesImg,
+    image: likesBanner.url,
     targetLabel: "Player UID",
     targetPlaceholder: "e.g. 8173310382",
     packages: [
@@ -104,7 +104,7 @@ export const CATEGORIES: Category[] = [
     name: "TCP Bot",
     tagline: "৭, ১৫ ও ৩০ দিন",
     description: "নাম, গিল্ড ও ফ্রেন্ড অ্যাড সহ TCP Bot — আপনার UID-তে চালু হবে।",
-    image: tcpImg,
+    image: tcpBanner.url,
     targetLabel: "Player UID",
     targetPlaceholder: "e.g. 8173310382",
     packages: [
