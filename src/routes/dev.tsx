@@ -26,8 +26,18 @@ function AdminLogin() {
       const { data: isAdmin, error: roleError } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
       if (roleError) throw roleError;
       if (!isAdmin) {
-        await supabase.auth.signOut();
-        throw new Error("This account does not have admin access.");
+        const { data: exists, error: existsError } = await supabase.rpc("admin_exists");
+        if (existsError) throw existsError;
+        if (exists) {
+          await supabase.auth.signOut();
+          throw new Error("This account does not have admin access.");
+        }
+        const { data: claimed, error: claimError } = await supabase.rpc("claim_first_admin");
+        if (claimError) throw claimError;
+        if (!claimed) {
+          await supabase.auth.signOut();
+          throw new Error("The first-admin slot has already been claimed.");
+        }
       }
       await navigate({ to: "/dev/dashboard" });
     } catch (e) { setError(e instanceof Error ? e.message : "Could not sign in."); }
