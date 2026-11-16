@@ -1,0 +1,4 @@
+-- MFJ TOP UP admin bootstrap support
+-- Run once only if the current project database is missing the admin role functions.
+-- Existing project migration already defines these functions; this file is provided as a reference only.
+-- Never grant admin privileges from the browser or expose the service-role key.
