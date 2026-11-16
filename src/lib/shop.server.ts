@@ -90,7 +90,7 @@ export async function createPendingOrder(input: {
     .insert({
       category_slug: input.categorySlug,
       item_label: input.itemLabel,
-      selection: input.selection as Database["public"]["Tables"]["orders"]["Insert"]["selection"],
+      selection: input.selection as NonNullable<Database["public"]["Tables"]["orders"]["Insert"]["selection"]>,
       target_id: input.targetId,
       customer_name: input.customerName,
       customer_email: input.customerEmail,

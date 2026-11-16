@@ -165,7 +165,8 @@ export function withPricing(category: Category, pricing: Pricing | undefined): C
     const presets = category.custom.presets.filter((q) => q >= min && q <= max && q % step === 0);
     custom = { ...category.custom, ...pricing.custom, presets: presets.length ? presets : [min] };
   }
-  return { ...category, packages: pricing.packages, ...(custom ? { custom } : { custom: undefined }) };
+  const { custom: _omit, ...rest } = category;
+  return custom ? { ...rest, packages: pricing.packages, custom } : { ...rest, packages: pricing.packages };
 }
 
 /**
