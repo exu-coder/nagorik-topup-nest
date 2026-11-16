@@ -17,11 +17,11 @@ export function PayLogos({ className, size = "md" }: { className?: string; size?
           key={m.name}
           style={{ animationDelay: `${i * 0.4}s` }}
           className={cn(
-            "grid animate-bob place-items-center rounded-xl border border-border bg-card shadow-soft dark:bg-foreground",
+            "flex animate-bob items-center justify-center overflow-hidden rounded-xl border border-border bg-card shadow-soft dark:bg-foreground",
             size === "sm" ? "h-8 w-12 p-1" : "h-11 w-16 p-1.5",
           )}
         >
-          <img src={m.src} alt={m.name} loading="lazy" className="max-h-full max-w-full object-contain" />
+          <img src={m.src} alt={m.name} loading="lazy" className="h-full w-full object-contain" />
         </span>
       ))}
     </div>

@@ -33,5 +33,5 @@ use the editor.
 
 - Product catalog and prices live in `src/lib/catalog.ts`; `quote()` is the only price source and the server recomputes it before every payment. Why: the browser must never choose its own amount.
 - NagorikPay calls go only through `src/lib/nagorikpay.server.ts` (server-only); webhooks land on `/api/public/nagorikpay` and must pass the HMAC check in `src/lib/nagorikpay-signature.ts` (Web Crypto) before anything else. Why: the webhook URL is public.
-- The app is dark-only; theme tokens live in `:root` in `src/styles.css` with no `.dark` block. Why: single brand look, no theme toggle.
+- Theme tokens live in `src/styles.css`: light (default) in `:root`, night in `.dark`; the header toggle sets `html.dark` and stores it in localStorage, and an inline head script applies it before paint. Why: matches the reference shop's day/night switch without a flash.
 - Accounts, wallet, orders and admin are pending until the owner's external database project is connected. Why: the owner chose their own project over the built-in backend.

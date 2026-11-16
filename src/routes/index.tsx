@@ -96,7 +96,7 @@ function Index() {
                   {/* pin + string */}
                   <span className="absolute -top-5 left-1/2 z-10 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-card bg-muted-foreground shadow-soft" />
                   <div
-                    className="animate-sway"
+                    className="animate-sway hover:[animation-play-state:paused]"
                     style={{ animationDelay: `${i * -1.7}s` }}
                   >
                     <span className="absolute -top-3.5 left-1/2 h-4 w-px -translate-x-1/2 bg-muted-foreground/50" />

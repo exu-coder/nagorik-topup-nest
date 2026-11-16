@@ -235,7 +235,7 @@ function CategoryView({ slug }: { slug: string }) {
               <p className="font-display text-lg font-bold uppercase">Custom {category.custom.unitLabel}</p>
               <Calculator className="h-5 w-5 text-violet" />
             </div>
-            <p className="mt-2 text-sm font-semibold">
+            <p className="mt-2 text-sm font-semibold capitalize">
               {category.custom.unitLabel}: {customQty.toLocaleString("en-US")}
             </p>
             <Slider
