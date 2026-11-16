@@ -134,13 +134,48 @@ export interface Quote {
   label: string;
 }
 
+/** Live prices for one category, as the admin panel saves them. */
+export interface Pricing {
+  active: boolean;
+  packages: CatalogPackage[];
+  custom: { pricePerStep: number; step: number; min: number; max: number } | null;
+}
+
+export type PricingMap = Partial<Record<CategorySlug, Pricing>>;
+
+/** Prices that ship with the code; used for tests and as a fallback before the database answers. */
+export function defaultPricing(slug: string): Pricing | undefined {
+  const c = getCategory(slug);
+  if (!c) return undefined;
+  return {
+    active: true,
+    packages: c.packages,
+    custom: c.custom
+      ? { pricePerStep: c.custom.pricePerStep, step: c.custom.step, min: c.custom.min, max: c.custom.max }
+      : null,
+  };
+}
+
+/** Category text and pictures from code, merged with live prices. */
+export function withPricing(category: Category, pricing: Pricing | undefined): Category {
+  if (!pricing) return category;
+  let custom: CustomQuantity | undefined;
+  if (pricing.custom && category.custom) {
+    const { min, max, step } = pricing.custom;
+    const presets = category.custom.presets.filter((q) => q >= min && q <= max && q % step === 0);
+    custom = { ...category.custom, ...pricing.custom, presets: presets.length ? presets : [min] };
+  }
+  return { ...category, packages: pricing.packages, ...(custom ? { custom } : { custom: undefined }) };
+}
+
 /**
- * Single source of truth for what a buyer pays. The server calls this before
- * creating a payment, so the browser can never choose its own price.
+ * Single source of truth for what a buyer pays. The server calls this with the
+ * live prices before creating a payment, so the browser can never choose its own price.
  */
-export function quote(slug: string, selection: Selection): Quote {
-  const category = getCategory(slug);
-  if (!category) throw new Error("Unknown category");
+export function quote(slug: string, selection: Selection, pricing?: Pricing): Quote {
+  const base = getCategory(slug);
+  if (!base) throw new Error("Unknown category");
+  const category = withPricing(base, pricing ?? defaultPricing(slug));
 
   if (selection.kind === "package") {
     const pkg = category.packages.find((p) => p.id === selection.packageId);
@@ -157,7 +192,7 @@ export function quote(slug: string, selection: Selection): Quote {
     );
   }
   return {
-    amount: (q / custom.step) * custom.pricePerStep,
+    amount: Math.round((q / custom.step) * custom.pricePerStep * 100) / 100,
     label: `${category.name} — ${q.toLocaleString("en-US")} ${custom.unitLabel} (custom)`,
   };
 }
